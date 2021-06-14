@@ -15,26 +15,11 @@ namespace MetricsAgentTests
         }
 
         [Fact]
-        public void GetMetricsByPercent_ReturnsOk()
-        {
-            //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = "10";
-
-            //Act
-            var result = controller.GetMetricsByPercent(fromTime, toTime, percentile);
-
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-
-        [Fact]
         public void GetMetricsByTime_ReturnsOk()
         {
             //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             //Act
             var result = controller.GetMetricsByTime(fromTime, toTime);

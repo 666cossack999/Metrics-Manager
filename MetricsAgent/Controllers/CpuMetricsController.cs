@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,15 +12,19 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
-        [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsByPercent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
-        {
-            return Ok();
-        }
+        private readonly ILogger<CpuMetricsController> _logger;
 
-        [HttpGet("/from/{fromTime}/to/{toTime}")]
+        public CpuMetricsController(ILogger<CpuMetricsController> logger)
+        {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
+        }
+        
+
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsByTime([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
+            _logger.LogInformation($"Метрика ЦПУ с {fromTime} по {toTime}");
             return Ok();
         }
     }
