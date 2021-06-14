@@ -11,14 +11,14 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
-        [HttpGet("from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
-        public IActionResult GetMetricsByPercent([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime, [FromRoute] string percentile)
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetricsByPercent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
             return Ok();
         }
 
         [HttpGet("/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsByTime([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public IActionResult GetMetricsByTime([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
             return Ok();
         }
