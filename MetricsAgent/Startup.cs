@@ -56,7 +56,7 @@ namespace MetricsAgent
                 Random rand = new Random();
                 for (int i = 0; i < 100; i++)
                 {
-                    string text = $"INSERT INTO metrics(value, time) VALUES({rand.Next(1, 100)},{rand.Next(1623736800, 1623751200)})";
+                    string text = $"INSERT INTO metrics(value, time) VALUES({rand.Next(1, 100)},{rand.Next(1603400800, 1623851200)})";
                     command.CommandText = text;
                     command.ExecuteNonQuery();
                 }
