@@ -16,9 +16,9 @@ namespace MetricsAgent.Controllers
 
         public RamMetricsController(IRamMetricsRepository repository, ILogger<RamMetricsController> logger)
         {
+            this.repository = repository;
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
-            this.repository = repository;
         }
 
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
