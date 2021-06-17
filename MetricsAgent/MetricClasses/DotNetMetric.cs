@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace MetricsAgent.MetricClasses
 {
-    public class CpuMetric
+    public class DotNetMetric
     {
         public int Id { get; set; }
 

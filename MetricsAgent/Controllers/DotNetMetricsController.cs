@@ -14,6 +14,7 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<DotNetMetricsController> _logger;
 
+
         public DotNetMetricsController(ILogger<DotNetMetricsController> logger)
         {
             _logger = logger;
