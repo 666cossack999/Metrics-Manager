@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Data.SQLite;
 
 namespace MetricsAgent
@@ -23,6 +24,10 @@ namespace MetricsAgent
             services.AddControllers();
             ConfigureSqlLiteConnection(services);
             services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
+            services.AddScoped<IDotNetMetricsRepository, DotNetMetricsRepository>();
+            services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
+            services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
+            services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)
@@ -44,9 +49,17 @@ namespace MetricsAgent
                 command.ExecuteNonQuery();
 
 
-                command.CommandText = @"CREATE TABLE cpumetrics(id INTEGER PRIMARY KEY,
+                command.CommandText = @"CREATE TABLE metrics(id INTEGER PRIMARY KEY,
                     value INT, time INT)";
                 command.ExecuteNonQuery();
+
+                Random rand = new Random();
+                for (int i = 0; i < 100; i++)
+                {
+                    string text = $"INSERT INTO metrics(value, time) VALUES({rand.Next(1, 100)},{rand.Next(1623736800, 1623751200)})";
+                    command.CommandText = text;
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
