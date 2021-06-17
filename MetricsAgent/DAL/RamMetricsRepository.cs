@@ -7,14 +7,13 @@ namespace MetricsAgent.DAL
 {
     // маркировочный интерфейс
     // необходим, чтобы проверить работу репозитория на тесте-заглушке
-    public interface INetworkMetricsRepository : IRepository<NetworkMetric>
+    public interface IRamMetricsRepository : IRepository<RamMetric>
     {
     }
-
-    public class NetworkMetricsRepository : INetworkMetricsRepository
+    public class RamMetricsRepository : IRamMetricsRepository
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-        public IList<NetworkMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
+        public IList<RamMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
@@ -24,13 +23,13 @@ namespace MetricsAgent.DAL
             cmd.CommandText = comText;
             cmd.ExecuteNonQuery();
 
-            var returnList = new List<NetworkMetric>();
+            var returnList = new List<RamMetric>();
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    returnList.Add(new NetworkMetric
+                    returnList.Add(new RamMetric
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
