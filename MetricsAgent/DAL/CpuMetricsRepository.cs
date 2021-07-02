@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsAgent.DAL
 {
@@ -16,11 +14,11 @@ namespace MetricsAgent.DAL
 
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100";
-        
+        private ConnectionManager connectionManager = new ConnectionManager();
 
         public IList<CpuMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
+            var ConnectionString = connectionManager.GetConnection();
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
@@ -39,9 +37,9 @@ namespace MetricsAgent.DAL
                     returnList.Add(new CpuMetric
                     {
                         Id = reader.GetInt32(0),
-                        Value = reader.GetInt32(1),
+                        Value = reader.GetInt64(1),
                         // налету преобразуем прочитанные секунды в метку времени
-                        Time = DateTimeOffset.FromUnixTimeSeconds(reader.GetInt32(2))
+                        Time = DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(2))
                     });
                 }
             }

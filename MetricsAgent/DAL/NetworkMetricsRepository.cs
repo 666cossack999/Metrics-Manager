@@ -33,8 +33,8 @@ namespace MetricsAgent.DAL
                     returnList.Add(new NetworkMetric
                     {
                         Id = reader.GetInt32(0),
-                        Value = reader.GetInt32(1),
-                        Time = DateTimeOffset.FromUnixTimeSeconds(reader.GetInt32(2))
+                        Value = reader.GetInt64(1),
+                        Time = DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(2))
                     });
                 }
             }

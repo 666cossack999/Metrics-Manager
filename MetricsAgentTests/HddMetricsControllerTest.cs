@@ -23,6 +23,7 @@ namespace MetricsAgentTests
             controller = new HddMetricsController(repositoryMock.Object, _loggerMock.Object);
         }
 
+        [Fact]
         public void GetMetrics_ReturnsOk()
         {
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
