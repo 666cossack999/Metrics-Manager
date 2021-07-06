@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using MetricsAgent.DAL;
 using MetricsAgent.Responses;
+using AutoMapper;
 
 namespace MetricsAgent.Controllers
 {
@@ -14,11 +15,14 @@ namespace MetricsAgent.Controllers
 
         private ICpuMetricsRepository repository;
         private readonly ILogger<CpuMetricsController> _logger;
-        public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
+        private readonly IMapper mapper;
+
+        public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger, IMapper mapper)
         {
+            this.mapper = mapper;
             this.repository = repository;
             _logger = logger;
-            _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
+            _logger.LogDebug(1, "NLog встроен в CpuMetricsController");            
         }
         
         [HttpGet("from/{fromTime}/to/{toTime}")]
@@ -37,7 +41,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
             }
 
             return Ok(response);

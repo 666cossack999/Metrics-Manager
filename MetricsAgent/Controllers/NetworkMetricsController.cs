@@ -1,4 +1,5 @@
-﻿using MetricsAgent.DAL;
+﻿using AutoMapper;
+using MetricsAgent.DAL;
 using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,12 +14,14 @@ namespace MetricsAgent.Controllers
     {
         private INetworkMetricsRepository repository;
         private readonly ILogger<NetworkMetricsController> _logger;
+        private readonly IMapper mapper;
 
-        public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger)
+        public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
@@ -37,7 +40,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<NetworkMetricDto>(metric));
             }
 
             return Ok(response);

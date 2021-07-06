@@ -1,4 +1,5 @@
-﻿using MetricsAgent.DAL;
+﻿using AutoMapper;
+using MetricsAgent.DAL;
 using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,9 +14,11 @@ namespace MetricsAgent.Controllers
     {
         private IRamMetricsRepository repository;
         private readonly ILogger<RamMetricsController> _logger;
+        private readonly IMapper mapper;
 
-        public RamMetricsController(IRamMetricsRepository repository, ILogger<RamMetricsController> logger)
+        public RamMetricsController(IRamMetricsRepository repository, ILogger<RamMetricsController> logger, IMapper mapper)
         {
+            this.mapper = mapper;
             this.repository = repository;
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
@@ -37,7 +40,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new RamMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<RamMetricDto>(metric));
             }
 
             return Ok(response);
