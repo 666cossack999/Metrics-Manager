@@ -1,12 +1,10 @@
-﻿using MetricsAgent.DAL;
+﻿using AutoMapper;
+using MetricsAgent.DAL;
 using MetricsAgent.Responses;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsAgent.Controllers
 {
@@ -16,12 +14,14 @@ namespace MetricsAgent.Controllers
     {
         private IHddMetricsRepository repository;
         private readonly ILogger<HddMetricsController> _logger;
+        private readonly IMapper mapper;
 
-        public HddMetricsController(IHddMetricsRepository repository, ILogger<HddMetricsController> logger)
+        public HddMetricsController(IHddMetricsRepository repository, ILogger<HddMetricsController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("left/from/{fromTime}/to/{toTime}")]
@@ -40,7 +40,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<HddMetricDto>(metric));
             }
 
             return Ok(response);
